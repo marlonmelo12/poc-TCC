@@ -152,10 +152,23 @@ def get_classifier_and_grid(classifier_name: str, seed: int = 42) -> Tuple[BaseE
             "weights": ["uniform", "distance"],
         }
     elif clf_clean in ["svm", "svc"]:
-        clf = SVC(random_state=seed)
+        # CalibratedClassifierCV wraps SVC to replace deprecated SVC(probability=True).
+        # Wrapping at the base estimator level ensures GridSearchCV tunes hyperparameters
+        # directly on calibrated probabilities, avoiding any post-hoc leakage or split mismatch.
+        try:
+            clf = CalibratedClassifierCV(
+                estimator=SVC(random_state=seed),
+                cv=3,
+                ensemble=False,
+            )
+        except TypeError:
+            clf = CalibratedClassifierCV(
+                estimator=SVC(random_state=seed),
+                cv=3,
+            )
         grid = {
-            "C": [0.1, 1.0, 10.0],
-            "kernel": ["linear", "rbf"],
+            "estimator__C": [0.1, 1.0, 10.0],
+            "estimator__kernel": ["linear", "rbf"],
         }
     elif clf_clean in ["xgboost", "xgb"]:
         if XGBClassifier is None:
@@ -211,7 +224,6 @@ def fit_classifier_with_hpo(
     Fits classifier with inner Stratified 3-Fold Grid Search exclusively on training data.
     Uses n_jobs=1 to guarantee process safety in GPU/CUDA containerized environments.
     """
-    clf_clean = classifier_name.strip().lower()
     base_clf, param_grid = get_classifier_and_grid(classifier_name, seed=seed)
 
     cv = StratifiedKFold(n_splits=cv_splits, shuffle=True, random_state=seed)
@@ -226,16 +238,9 @@ def fit_classifier_with_hpo(
 
     grid_search.fit(X_train, y_train)
     best_estimator = grid_search.best_estimator_
-    best_params = grid_search.best_params_
-
-    if clf_clean in ["svm", "svc"]:
-        # Calibrate probabilities using official scikit-learn recommendation
-        # without deprecated probability=True
-        try:
-            calibrated = CalibratedClassifierCV(estimator=best_estimator, cv=3, ensemble=False)
-        except TypeError:
-            calibrated = CalibratedClassifierCV(estimator=best_estimator, cv=3)
-        calibrated.fit(X_train, y_train)
-        best_estimator = calibrated
+    # Strip prefix (e.g. 'estimator__C' -> 'C') for transparent parameter logging
+    best_params = {
+        k.replace("estimator__", ""): v for k, v in grid_search.best_params_.items()
+    }
 
     return best_estimator, best_params
