@@ -183,6 +183,10 @@ def _evaluate_selector_on_classifiers(
 
             metrics = evaluate_predictions(y_test, y_pred, y_prob)
 
+            solver_info = getattr(selector, "solver_info_", None) or {}
+            raw_k = solver_info.get("raw_k", None)
+            card_native = solver_info.get("cardinality_satisfied_natively", None)
+
             record = {
                 "dataset": dataset_name,
                 "fold": fold_idx,
@@ -200,6 +204,8 @@ def _evaluate_selector_on_classifiers(
                 "runtime_selection": runtime_selection,
                 "runtime_training": runtime_training,
                 "qubo_energy": qubo_energy,
+                "raw_k": raw_k,
+                "cardinality_satisfied_natively": card_native,
                 "best_params": best_params,
                 "status": "SUCCESS",
             }

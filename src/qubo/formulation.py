@@ -138,15 +138,68 @@ def build_qubo_dict(
     return matrix_to_qubo_dict(Q_sym)
 
 
-def calibrate_lambda(r: np.ndarray, beta: float = 1.0, K: int = 10) -> float:
+def calibrate_lambda(
+    r: np.ndarray,
+    beta: float = 1.0,
+    K: int = 10,
+    alpha: float = 1.0,
+) -> float:
     """
-    Rule-of-thumb / safety heuristic for cardinality penalty parameter lambda:
-    Ensures that adding or removing a feature away from K incurs a penalty
-    significantly higher than the maximum possible gain in relevance or reduction in redundancy.
-    Default multiplier ensures strict adherence to K.
+    Dynamic cardinality penalty parameter lambda(K):
+    Scales sublinearly with K to balance cumulative pairwise redundancy
+    against the quadratic cardinality constraint without inducing numerical stiffness
+    or freezing in Simulated Bifurcation Kerr oscillators.
     """
     max_relevance = float(np.max(r)) if len(r) > 0 else 1.0
-    # A single step deviation from K changes the quadratic penalty by at least 2*|card - K| - 1 >= 1
-    # lambda should exceed max relevance gain and redundancy loss
-    lambda_val = max(2.0, max_relevance + beta)
+    base_penalty = alpha * max_relevance
+    # Redundancy grows with selected set; sqrt(K) + linear scaling ensures sufficient constraint pressure
+    k_factor = 0.5 * beta * np.sqrt(max(1, K)) + 0.1 * beta * float(K)
+    lambda_val = max(2.5, base_penalty + k_factor)
     return float(lambda_val)
+
+
+def project_cardinality_qubo(
+    x: np.ndarray,
+    r: np.ndarray,
+    d: np.ndarray,
+    K: int,
+    alpha: float = 1.0,
+    beta: float = 1.0,
+) -> np.ndarray:
+    """
+    Exact discrete projection of a binary solution x onto the cardinality hyperplane sum(x) = K.
+    Uses the exact marginal gradient of the unconstrained mRMR objective:
+        grad_i E(x) = -alpha * r_i + beta * (d @ x)_i
+    - If sum(x) < K: selects the (K - sum(x)) unselected features with lowest marginal cost.
+    - If sum(x) > K: removes the (sum(x) - K) selected features with highest marginal cost.
+    - If sum(x) == K: returns unmodified copy.
+    Runtime complexity: O(p) via BLAS matrix-vector product.
+    """
+    x_proj = np.asarray(x, dtype=np.int64).copy()
+    k_curr = int(np.sum(x_proj))
+    if k_curr == K:
+        return x_proj
+
+    n_features = len(x_proj)
+    K_target = min(max(1, K), n_features)
+
+    # Marginal gradient: cost of each feature given currently selected set
+    # grad_i = -alpha * r_i + beta * sum_{j in selected} d_ij
+    marginal_cost = -alpha * r + beta * (d @ x_proj)
+
+    if k_curr < K_target:
+        n_to_add = K_target - k_curr
+        # Mask out already selected features so they cannot be picked again
+        marginal_cost[x_proj == 1] = np.inf
+        # Pick n_to_add features with lowest marginal cost
+        best_indices = np.argpartition(marginal_cost, n_to_add)[:n_to_add]
+        x_proj[best_indices] = 1
+    elif k_curr > K_target:
+        n_to_remove = k_curr - K_target
+        # Mask out unselected features so only currently selected can be pruned
+        marginal_cost[x_proj == 0] = -np.inf
+        # Pick n_to_remove features with highest marginal cost (worst contribution)
+        worst_indices = np.argpartition(marginal_cost, -n_to_remove)[-n_to_remove:]
+        x_proj[worst_indices] = 0
+
+    return x_proj

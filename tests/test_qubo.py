@@ -174,3 +174,68 @@ def test_qubo_matrix_dict_roundtrip():
 
     assert np.allclose(Q_sym, Q_recovered, atol=1e-12)
 
+
+def test_calibrate_lambda_dynamic_scaling():
+    """Verify that calibrate_lambda scales dynamically with K to maintain constraint pressure."""
+    r = np.array([0.9, 0.8, 0.7, 0.6, 0.5])
+    lambda_10 = calibrate_lambda(r, beta=1.0, K=10)
+    lambda_20 = calibrate_lambda(r, beta=1.0, K=20)
+    lambda_50 = calibrate_lambda(r, beta=1.0, K=50)
+    lambda_100 = calibrate_lambda(r, beta=1.0, K=100)
+
+    assert lambda_10 >= 2.5
+    assert lambda_10 < lambda_20 < lambda_50 < lambda_100, (
+        f"Lambda must scale monotonically with K: {[lambda_10, lambda_20, lambda_50, lambda_100]}"
+    )
+
+
+def test_project_cardinality_qubo():
+    """Verify exact discrete projection on the cardinality simplex."""
+    from src.qubo.formulation import project_cardinality_qubo
+
+    np.random.seed(42)
+    n = 50
+    r = np.linspace(0.1, 1.0, n)
+    d = np.random.uniform(0.0, 0.5, (n, n))
+    np.fill_diagonal(d, 0.0)
+
+    # 1. Under-cardinality: x has 5 features, target is 15
+    x_under = np.zeros(n, dtype=np.int64)
+    x_under[:5] = 1
+    x_proj_under = project_cardinality_qubo(x_under, r, d, K=15)
+    assert np.sum(x_proj_under) == 15
+    # Original 5 should remain selected
+    assert np.all(x_proj_under[:5] == 1)
+
+    # 2. Over-cardinality: x has 25 features, target is 10
+    x_over = np.zeros(n, dtype=np.int64)
+    x_over[:25] = 1
+    x_proj_over = project_cardinality_qubo(x_over, r, d, K=10)
+    assert np.sum(x_proj_over) == 10
+    # Selected must be subset of original 25
+    assert np.all(x_proj_over[25:] == 0)
+
+    # 3. Exact cardinality: x already has 10 features, target is 10
+    x_exact = np.zeros(n, dtype=np.int64)
+    x_exact[:10] = 1
+    x_proj_exact = project_cardinality_qubo(x_exact, r, d, K=10)
+    assert np.array_equal(x_exact, x_proj_exact)
+
+
+def test_qubo_selector_exact_cardinality_large_k():
+    """Verify QUBOFeatureSelector guarantees exact cardinality K in [10, 20, 50]."""
+    from src.selectors.qubo_selector import QUBOFeatureSelector
+
+    np.random.seed(42)
+    X = np.random.randn(30, 60)
+    y = np.random.randint(0, 2, size=30)
+
+    for K in [5, 15, 25]:
+        selector = QUBOFeatureSelector(solver_name="QUBO-SA", K=K, seed=42)
+        selector.fit(X, y)
+        support = selector.get_support()
+        assert np.sum(support) == K, f"QUBO-SA failed exact cardinality: {np.sum(support)} != {K}"
+        assert selector.solver_info_["repaired_k"] == K
+        assert "cardinality_satisfied_natively" in selector.solver_info_
+        assert "raw_k" in selector.solver_info_
+

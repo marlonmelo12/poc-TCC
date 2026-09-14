@@ -52,10 +52,10 @@ class QUBOFeatureSelector(BaseFeatureSelector):
         self.r_ = r
         self.d_ = d
 
-        # Calibrate lambda if not specified
+        # Calibrate lambda dynamically if not specified
         lambda_val = self.lambda_
         if lambda_val is None:
-            lambda_val = calibrate_lambda(r, beta=self.beta, K=self.K)
+            lambda_val = calibrate_lambda(r, beta=self.beta, K=self.K, alpha=self.alpha)
 
         best_solution, best_energy, solver_time, info = solve_qubo(
             solver_name=self.solver_name,
@@ -66,6 +66,7 @@ class QUBOFeatureSelector(BaseFeatureSelector):
             beta=self.beta,
             lambda_=lambda_val,
             seed=self.seed,
+            project_cardinality=True,
             **self.solver_kwargs,
         )
 
@@ -76,6 +77,14 @@ class QUBOFeatureSelector(BaseFeatureSelector):
             best_solution[top_k_indices] = 1
             if info is not None:
                 info["fallback_used"] = True
+
+        if info is not None:
+            info["raw_k"] = info.get("raw_k", int(np.sum(best_solution)))
+            info["repaired_k"] = int(np.sum(best_solution))
+            info["cardinality_satisfied_natively"] = info.get(
+                "cardinality_satisfied_natively", bool(info["raw_k"] == self.K)
+            )
+            info["delta_k"] = abs(info["raw_k"] - self.K)
 
         self.support_mask_ = (best_solution == 1)
         self.selected_indices_ = np.where(self.support_mask_)[0]

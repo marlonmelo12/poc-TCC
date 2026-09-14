@@ -20,7 +20,12 @@ except ImportError:
     sb = None
     torch = None
 
-from .formulation import build_qubo_dict, build_qubo_matrix_symmetric, compute_energy_analytical
+from .formulation import (
+    build_qubo_dict,
+    build_qubo_matrix_symmetric,
+    compute_energy_analytical,
+    project_cardinality_qubo,
+)
 
 
 def solve_qubo_sa(
@@ -33,6 +38,7 @@ def solve_qubo_sa(
     num_sweeps: int = 1000,
     num_reads: int = 10,
     seed: int = 42,
+    project_cardinality: bool = True,
 ) -> Tuple[np.ndarray, float, float, Dict[str, Any]]:
     """
     Solves QUBO using D-Wave Neal SimulatedAnnealingSampler.
@@ -63,6 +69,12 @@ def solve_qubo_sa(
     n_features = len(r)
     best_solution = np.array([best_sample.get(i, 0) for i in range(n_features)], dtype=np.int64)
 
+    raw_k = int(np.sum(best_solution))
+    cardinality_satisfied_natively = bool(raw_k == K)
+
+    if project_cardinality and not cardinality_satisfied_natively:
+        best_solution = project_cardinality_qubo(best_solution, r, d, K, alpha=alpha, beta=beta)
+
     best_energy = compute_energy_analytical(best_solution, r, d, K, alpha, beta, lambda_)
 
     info = {
@@ -71,9 +83,12 @@ def solve_qubo_sa(
         "num_reads": num_reads,
         "seed": seed,
         "raw_energy": float(response.first.energy),
+        "raw_k": raw_k,
         "selected_k": int(np.sum(best_solution)),
         "target_k": K,
         "cardinality_satisfied": bool(np.sum(best_solution) == K),
+        "cardinality_satisfied_natively": cardinality_satisfied_natively,
+        "repaired": bool(raw_k != np.sum(best_solution)),
     }
 
     return best_solution, best_energy, runtime, info
@@ -90,6 +105,7 @@ def solve_qubo_sb(
     steps: int = 2000,
     agents: int = 256,
     seed: Optional[int] = 42,
+    project_cardinality: bool = True,
 ) -> Tuple[np.ndarray, float, float, Dict[str, Any]]:
     """
     Solves QUBO using Toshiba Simulated Bifurcation (SB).
@@ -148,6 +164,12 @@ def solve_qubo_sb(
         best_solution[top_k] = 1
         fallback_used = True
 
+    raw_k = int(np.sum(best_solution))
+    cardinality_satisfied_natively = bool(raw_k == K)
+
+    if project_cardinality and not cardinality_satisfied_natively:
+        best_solution = project_cardinality_qubo(best_solution, r, d, K, alpha=alpha, beta=beta)
+
     best_energy = compute_energy_analytical(best_solution, r, d, K, alpha, beta, lambda_)
 
     info = {
@@ -155,9 +177,12 @@ def solve_qubo_sb(
         "max_steps": steps,
         "agents": agents,
         "seed": seed,
+        "raw_k": raw_k,
         "selected_k": int(np.sum(best_solution)),
         "target_k": K,
         "cardinality_satisfied": bool(np.sum(best_solution) == K),
+        "cardinality_satisfied_natively": cardinality_satisfied_natively,
+        "repaired": bool(raw_k != np.sum(best_solution)),
         "fallback_used": fallback_used,
     }
 
@@ -174,6 +199,7 @@ def solve_qubo(
     beta: float = 1.0,
     lambda_: float = 2.0,
     seed: int = 42,
+    project_cardinality: bool = True,
     **kwargs,
 ) -> Tuple[np.ndarray, float, float, Dict[str, Any]]:
     """
@@ -185,14 +211,16 @@ def solve_qubo(
         num_reads = kwargs.get("num_reads", 10)
         return solve_qubo_sa(
             r, d, K, alpha=alpha, beta=beta, lambda_=lambda_,
-            num_sweeps=num_sweeps, num_reads=num_reads, seed=seed
+            num_sweeps=num_sweeps, num_reads=num_reads, seed=seed,
+            project_cardinality=project_cardinality,
         )
     elif "sb" in solver_clean or "bifurcation" in solver_clean:
         steps = kwargs.get("steps", 1000)
         agents = kwargs.get("agents", 256)
         return solve_qubo_sb(
             r, d, K, alpha=alpha, beta=beta, lambda_=lambda_,
-            steps=steps, agents=agents, seed=seed
+            steps=steps, agents=agents, seed=seed,
+            project_cardinality=project_cardinality,
         )
     else:
         raise ValueError(f"Unknown QUBO solver: {solver_name}")
