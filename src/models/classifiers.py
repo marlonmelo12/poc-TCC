@@ -8,10 +8,13 @@ Classifier implementations and HPO grids for multimodelo evaluation:
 - Optimum-Path Forest (OPF) with pyopf or vectorized pure-Python/SciPy fallback
 """
 
+import warnings
 from typing import Dict, Any, Tuple, Optional
 import numpy as np
 from scipy.spatial.distance import cdist
 from scipy.sparse.csgraph import minimum_spanning_tree
+
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.ensemble import RandomForestClassifier
