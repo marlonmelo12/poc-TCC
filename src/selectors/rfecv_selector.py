@@ -23,7 +23,7 @@ class RFECVFeatureSelector(BaseFeatureSelector):
         step: float = 0.10,
         cv_splits: int = 3,
         random_state: int = 42,
-        n_jobs: int = -1,
+        n_jobs: int = 1,
     ):
         super().__init__(name="RFECV")
         self.n_estimators = n_estimators

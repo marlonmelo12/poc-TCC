@@ -46,7 +46,7 @@ class LassoFeatureSelector(BaseFeatureSelector):
             scoring="accuracy",
             random_state=self.random_state,
             max_iter=self.max_iter,
-            n_jobs=-1,
+            n_jobs=1,
             tol=1e-3,
         )
 

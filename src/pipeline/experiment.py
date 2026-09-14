@@ -4,13 +4,10 @@ Inner 3-Fold HPO, Model Training, and Outer Test Evaluation with strict zero dat
 """
 
 import time
-import warnings
 from typing import List, Dict, Any, Optional
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import StratifiedKFold
-
-warnings.filterwarnings("ignore", category=FutureWarning)
 
 from ..data.loader import load_dataset
 from ..qubo.metrics_mrmr import compute_mrmr_matrices

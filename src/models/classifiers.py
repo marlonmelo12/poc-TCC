@@ -14,12 +14,11 @@ import numpy as np
 from scipy.spatial.distance import cdist
 from scipy.sparse.csgraph import minimum_spanning_tree
 
-warnings.filterwarnings("ignore", category=FutureWarning)
-
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
+from sklearn.calibration import CalibratedClassifierCV
 from sklearn.model_selection import GridSearchCV, StratifiedKFold
 
 try:
@@ -153,7 +152,7 @@ def get_classifier_and_grid(classifier_name: str, seed: int = 42) -> Tuple[BaseE
             "weights": ["uniform", "distance"],
         }
     elif clf_clean in ["svm", "svc"]:
-        clf = SVC(probability=True, random_state=seed)
+        clf = SVC(random_state=seed)
         grid = {
             "C": [0.1, 1.0, 10.0],
             "kernel": ["linear", "rbf"],
@@ -161,7 +160,15 @@ def get_classifier_and_grid(classifier_name: str, seed: int = 42) -> Tuple[BaseE
     elif clf_clean in ["xgboost", "xgb"]:
         if XGBClassifier is None:
             raise ImportError("xgboost is not installed.")
-        clf = XGBClassifier(random_state=seed, eval_metric="logloss", n_jobs=1)
+        xgb_kwargs = {
+            "random_state": seed,
+            "eval_metric": "logloss",
+            "n_jobs": 1,
+        }
+        try:
+            clf = XGBClassifier(**xgb_kwargs, device="cpu")
+        except TypeError:
+            clf = XGBClassifier(**xgb_kwargs)
         grid = {
             "n_estimators": [50, 100],
             "learning_rate": [0.05, 0.1],
@@ -170,7 +177,13 @@ def get_classifier_and_grid(classifier_name: str, seed: int = 42) -> Tuple[BaseE
     elif clf_clean in ["catboost"]:
         if CatBoostClassifier is None:
             raise ImportError("catboost is not installed.")
-        clf = CatBoostClassifier(random_state=seed, verbose=0, thread_count=1, allow_writing_files=False)
+        clf = CatBoostClassifier(
+            random_state=seed,
+            verbose=0,
+            thread_count=1,
+            allow_writing_files=False,
+            task_type="CPU",
+        )
         grid = {
             "iterations": [50, 100],
             "learning_rate": [0.05, 0.1],
@@ -196,7 +209,9 @@ def fit_classifier_with_hpo(
 ) -> Tuple[BaseEstimator, Dict[str, Any]]:
     """
     Fits classifier with inner Stratified 3-Fold Grid Search exclusively on training data.
+    Uses n_jobs=1 to guarantee process safety in GPU/CUDA containerized environments.
     """
+    clf_clean = classifier_name.strip().lower()
     base_clf, param_grid = get_classifier_and_grid(classifier_name, seed=seed)
 
     cv = StratifiedKFold(n_splits=cv_splits, shuffle=True, random_state=seed)
@@ -205,12 +220,22 @@ def fit_classifier_with_hpo(
         param_grid=param_grid,
         cv=cv,
         scoring="accuracy",
-        n_jobs=-1,
+        n_jobs=1,
         refit=True,
     )
 
     grid_search.fit(X_train, y_train)
     best_estimator = grid_search.best_estimator_
     best_params = grid_search.best_params_
+
+    if clf_clean in ["svm", "svc"]:
+        # Calibrate probabilities using official scikit-learn recommendation
+        # without deprecated probability=True
+        try:
+            calibrated = CalibratedClassifierCV(estimator=best_estimator, cv=3, ensemble=False)
+        except TypeError:
+            calibrated = CalibratedClassifierCV(estimator=best_estimator, cv=3)
+        calibrated.fit(X_train, y_train)
+        best_estimator = calibrated
 
     return best_estimator, best_params
