@@ -8,7 +8,7 @@
 
 ## 1. Integridade dos Dados e Pareamento
 
-- **Total de Observações Válidas:** 450
+- **Total de Observações Válidas:** 1440
 
 - **Duplicatas Descartadas:** 0
 
@@ -18,7 +18,7 @@
 
 - **Classificadores:** ['rf', 'knn', 'svm', 'xgboost', 'catboost', 'opf']
 
-- **Folds Pareados:** [0, 1, 2, 3, 4]
+- **Folds Pareados:** [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 
 ---
@@ -30,13 +30,13 @@ Avalia se os 6 métodos de seleção diferem globalmente em termos de ranking so
 
 | Dataset   | Classifier      | Metric   |   K_Reference |   N_Blocks |   k_Methods |   Statistic |     p_value | Significant   |
 |:----------|:----------------|:---------|--------------:|-----------:|------------:|------------:|------------:|:--------------|
-| colon     | RF              | F1       |            20 |          5 |           6 |     5.09174 | 0.404787    | False         |
-| colon     | KNN             | F1       |            20 |          5 |           6 |    11.6207  | 0.0403716   | True          |
-| colon     | SVM             | F1       |            20 |          5 |           6 |    10.2451  | 0.068581    | False         |
-| colon     | XGBOOST         | F1       |            20 |          5 |           6 |     7.48    | 0.187318    | False         |
-| colon     | CATBOOST        | F1       |            20 |          5 |           6 |     7.02586 | 0.218724    | False         |
-| colon     | OPF             | F1       |            20 |          5 |           6 |     8.9557  | 0.110844    | False         |
-| colon     | ALL_CLASSIFIERS | F1       |            20 |         30 |           6 |    27.9536  | 3.71662e-05 | True          |
+| colon     | RF              | F1       |            20 |         10 |           6 |     9.94253 | 0.0768801   | False         |
+| colon     | KNN             | F1       |            20 |         10 |           6 |    13.066   | 0.0227677   | True          |
+| colon     | SVM             | F1       |            20 |         10 |           6 |     4.91573 | 0.426251    | False         |
+| colon     | XGBOOST         | F1       |            20 |         10 |           6 |     6.79825 | 0.236083    | False         |
+| colon     | CATBOOST        | F1       |            20 |         10 |           6 |    17.3718  | 0.00384607  | True          |
+| colon     | OPF             | F1       |            20 |         10 |           6 |     6       | 0.306219    | False         |
+| colon     | ALL_CLASSIFIERS | F1       |            20 |         60 |           6 |    35.3798  | 1.26359e-06 | True          |
 
 
 ---
@@ -49,48 +49,48 @@ O método com menor ranking médio apresenta o desempenho superior consistente a
 
 | Dataset   | Classifier      | Metric   |   K_Reference | Method   |   Mean_Rank |   Std_Rank |
 |:----------|:----------------|:---------|--------------:|:---------|------------:|-----------:|
-| colon     | RF              | F1       |            20 | RFECV    |     2.8     |   1.03682  |
-| colon     | RF              | F1       |            20 | Lasso    |     3.1     |   1.29422  |
-| colon     | RF              | F1       |            20 | QUBO-SB  |     3.2     |   0.758288 |
-| colon     | RF              | F1       |            20 | None     |     3.5     |   1.11803  |
-| colon     | RF              | F1       |            20 | ANOVA    |     3.7     |   1.68077  |
-| colon     | RF              | F1       |            20 | QUBO-SA  |     4.7     |   1.85742  |
-| colon     | KNN             | F1       |            20 | QUBO-SB  |     2       |   0.5      |
-| colon     | KNN             | F1       |            20 | Lasso    |     2.3     |   0.570088 |
-| colon     | KNN             | F1       |            20 | ANOVA    |     3.5     |   1.90394  |
-| colon     | KNN             | F1       |            20 | RFECV    |     3.9     |   1.38744  |
-| colon     | KNN             | F1       |            20 | QUBO-SA  |     4.3     |   1.25499  |
-| colon     | KNN             | F1       |            20 | None     |     5       |   1.41421  |
-| colon     | SVM             | F1       |            20 | None     |     2.5     |   0.935414 |
-| colon     | SVM             | F1       |            20 | RFECV    |     2.9     |   0.821584 |
-| colon     | SVM             | F1       |            20 | QUBO-SB  |     3.1     |   1.29422  |
-| colon     | SVM             | F1       |            20 | ANOVA    |     3.6     |   1.51658  |
-| colon     | SVM             | F1       |            20 | Lasso    |     3.8     |   0.908295 |
-| colon     | SVM             | F1       |            20 | QUBO-SA  |     5.1     |   1.08397  |
-| colon     | XGBOOST         | F1       |            20 | ANOVA    |     2.4     |   1.29422  |
-| colon     | XGBOOST         | F1       |            20 | Lasso    |     3       |   0.935414 |
-| colon     | XGBOOST         | F1       |            20 | QUBO-SB  |     3       |   0.935414 |
-| colon     | XGBOOST         | F1       |            20 | None     |     3.6     |   1.71026  |
-| colon     | XGBOOST         | F1       |            20 | RFECV    |     4.4     |   0.65192  |
-| colon     | XGBOOST         | F1       |            20 | QUBO-SA  |     4.6     |   2.04328  |
-| colon     | CATBOOST        | F1       |            20 | QUBO-SB  |     2.5     |   1.11803  |
-| colon     | CATBOOST        | F1       |            20 | None     |     3.1     |   0.894427 |
-| colon     | CATBOOST        | F1       |            20 | RFECV    |     3.3     |   1.20416  |
-| colon     | CATBOOST        | F1       |            20 | ANOVA    |     3.4     |   1.38744  |
-| colon     | CATBOOST        | F1       |            20 | Lasso    |     3.8     |   1.78885  |
-| colon     | CATBOOST        | F1       |            20 | QUBO-SA  |     4.9     |   1.34164  |
-| colon     | OPF             | F1       |            20 | Lasso    |     2       |   0.612372 |
-| colon     | OPF             | F1       |            20 | QUBO-SB  |     2.4     |   1.14018  |
-| colon     | OPF             | F1       |            20 | ANOVA    |     3.7     |   2.38747  |
-| colon     | OPF             | F1       |            20 | RFECV    |     3.9     |   1.47479  |
-| colon     | OPF             | F1       |            20 | None     |     4.5     |   0.612372 |
-| colon     | OPF             | F1       |            20 | QUBO-SA  |     4.5     |   1.65831  |
-| colon     | ALL_CLASSIFIERS | F1       |            20 | QUBO-SB  |     2.7     |   1.00516  |
-| colon     | ALL_CLASSIFIERS | F1       |            20 | Lasso    |     3       |   1.21769  |
-| colon     | ALL_CLASSIFIERS | F1       |            20 | ANOVA    |     3.38333 |   1.6436   |
-| colon     | ALL_CLASSIFIERS | F1       |            20 | RFECV    |     3.53333 |   1.18855  |
-| colon     | ALL_CLASSIFIERS | F1       |            20 | None     |     3.7     |   1.36205  |
-| colon     | ALL_CLASSIFIERS | F1       |            20 | QUBO-SA  |     4.68333 |   1.45912  |
+| colon     | RF              | F1       |            20 | Lasso    |     2.65    |   0.914391 |
+| colon     | RF              | F1       |            20 | None     |     3.25    |   1.11181  |
+| colon     | RF              | F1       |            20 | RFECV    |     3.4     |   0.774597 |
+| colon     | RF              | F1       |            20 | ANOVA    |     3.45    |   0.831665 |
+| colon     | RF              | F1       |            20 | QUBO-SB  |     3.85    |   1.1068   |
+| colon     | RF              | F1       |            20 | QUBO-SA  |     4.4     |   1.77639  |
+| colon     | KNN             | F1       |            20 | ANOVA    |     2.35    |   1.05541  |
+| colon     | KNN             | F1       |            20 | QUBO-SB  |     3.15    |   1.08141  |
+| colon     | KNN             | F1       |            20 | Lasso    |     3.2     |   1.13529  |
+| colon     | KNN             | F1       |            20 | None     |     3.8     |   0.823273 |
+| colon     | KNN             | F1       |            20 | RFECV    |     4.15    |   1.51015  |
+| colon     | KNN             | F1       |            20 | QUBO-SA  |     4.35    |   1.4729   |
+| colon     | SVM             | F1       |            20 | ANOVA    |     2.9     |   0.843274 |
+| colon     | SVM             | F1       |            20 | None     |     3.2     |   1.00554  |
+| colon     | SVM             | F1       |            20 | Lasso    |     3.35    |   1.29207  |
+| colon     | SVM             | F1       |            20 | RFECV    |     3.7     |   0.856349 |
+| colon     | SVM             | F1       |            20 | QUBO-SB  |     3.9     |   1.55991  |
+| colon     | SVM             | F1       |            20 | QUBO-SA  |     3.95    |   1.53569  |
+| colon     | XGBOOST         | F1       |            20 | Lasso    |     2.95    |   0.895979 |
+| colon     | XGBOOST         | F1       |            20 | RFECV    |     3       |   1.17851  |
+| colon     | XGBOOST         | F1       |            20 | None     |     3.15    |   0.747217 |
+| colon     | XGBOOST         | F1       |            20 | ANOVA    |     3.75    |   0.824958 |
+| colon     | XGBOOST         | F1       |            20 | QUBO-SB  |     3.8     |   1.91775  |
+| colon     | XGBOOST         | F1       |            20 | QUBO-SA  |     4.35    |   1.9586   |
+| colon     | CATBOOST        | F1       |            20 | None     |     2.75    |   0.790569 |
+| colon     | CATBOOST        | F1       |            20 | Lasso    |     2.95    |   0.497214 |
+| colon     | CATBOOST        | F1       |            20 | ANOVA    |     3.3     |   0.856349 |
+| colon     | CATBOOST        | F1       |            20 | RFECV    |     3.3     |   0.856349 |
+| colon     | CATBOOST        | F1       |            20 | QUBO-SB  |     3.95    |   1.23491  |
+| colon     | CATBOOST        | F1       |            20 | QUBO-SA  |     4.75    |   1.33853  |
+| colon     | OPF             | F1       |            20 | Lasso    |     2.6     |   1.37032  |
+| colon     | OPF             | F1       |            20 | ANOVA    |     3.25    |   1.41912  |
+| colon     | OPF             | F1       |            20 | RFECV    |     3.5     |   1.63299  |
+| colon     | OPF             | F1       |            20 | None     |     3.55    |   1.14139  |
+| colon     | OPF             | F1       |            20 | QUBO-SA  |     3.95    |   1.34268  |
+| colon     | OPF             | F1       |            20 | QUBO-SB  |     4.15    |   1.59948  |
+| colon     | ALL_CLASSIFIERS | F1       |            20 | Lasso    |     2.95    |   1.0484   |
+| colon     | ALL_CLASSIFIERS | F1       |            20 | ANOVA    |     3.16667 |   1.0523   |
+| colon     | ALL_CLASSIFIERS | F1       |            20 | None     |     3.28333 |   0.967115 |
+| colon     | ALL_CLASSIFIERS | F1       |            20 | RFECV    |     3.50833 |   1.18783  |
+| colon     | ALL_CLASSIFIERS | F1       |            20 | QUBO-SB  |     3.8     |   1.42079  |
+| colon     | ALL_CLASSIFIERS | F1       |            20 | QUBO-SA  |     4.29167 |   1.54396  |
 
 
 ---
@@ -98,38 +98,53 @@ O método com menor ranking médio apresenta o desempenho superior consistente a
 
 ## 4. Pós-Teste de Nemenyi (Comparações Globais Múltiplas)
 
-| Dataset   | Classifier      | Metric   |   K_Reference | Method_A   | Method_B   |     p_value | Significant   |
-|:----------|:----------------|:---------|--------------:|:-----------|:-----------|------------:|:--------------|
-| colon     | KNN             | F1       |            20 | None       | ANOVA      | 0.802694    | False         |
-| colon     | KNN             | F1       |            20 | None       | RFECV      | 0.938967    | False         |
-| colon     | KNN             | F1       |            20 | None       | Lasso      | 0.201363    | False         |
-| colon     | KNN             | F1       |            20 | None       | QUBO-SA    | 0.991626    | False         |
-| colon     | KNN             | F1       |            20 | None       | QUBO-SB    | 0.113891    | False         |
-| colon     | KNN             | F1       |            20 | ANOVA      | RFECV      | 0.99942     | False         |
-| colon     | KNN             | F1       |            20 | ANOVA      | Lasso      | 0.91341     | False         |
-| colon     | KNN             | F1       |            20 | ANOVA      | QUBO-SA    | 0.984591    | False         |
-| colon     | KNN             | F1       |            20 | ANOVA      | QUBO-SB    | 0.802694    | False         |
-| colon     | KNN             | F1       |            20 | RFECV      | Lasso      | 0.755551    | False         |
-| colon     | KNN             | F1       |            20 | RFECV      | QUBO-SA    | 0.99942     | False         |
-| colon     | KNN             | F1       |            20 | RFECV      | QUBO-SB    | 0.59468     | False         |
-| colon     | KNN             | F1       |            20 | Lasso      | QUBO-SA    | 0.538193    | False         |
-| colon     | KNN             | F1       |            20 | Lasso      | QUBO-SB    | 0.999858    | False         |
-| colon     | KNN             | F1       |            20 | QUBO-SA    | QUBO-SB    | 0.375252    | False         |
-| colon     | ALL_CLASSIFIERS | F1       |            20 | None       | ANOVA      | 0.986599    | False         |
-| colon     | ALL_CLASSIFIERS | F1       |            20 | None       | RFECV      | 0.999359    | False         |
-| colon     | ALL_CLASSIFIERS | F1       |            20 | None       | Lasso      | 0.696733    | False         |
-| colon     | ALL_CLASSIFIERS | F1       |            20 | None       | QUBO-SA    | 0.321939    | False         |
-| colon     | ALL_CLASSIFIERS | F1       |            20 | None       | QUBO-SB    | 0.302993    | False         |
-| colon     | ALL_CLASSIFIERS | F1       |            20 | ANOVA      | RFECV      | 0.999617    | False         |
-| colon     | ALL_CLASSIFIERS | F1       |            20 | ANOVA      | Lasso      | 0.968702    | False         |
-| colon     | ALL_CLASSIFIERS | F1       |            20 | ANOVA      | QUBO-SA    | 0.0769319   | False         |
-| colon     | ALL_CLASSIFIERS | F1       |            20 | ANOVA      | QUBO-SB    | 0.718178    | False         |
-| colon     | ALL_CLASSIFIERS | F1       |            20 | RFECV      | Lasso      | 0.879898    | False         |
-| colon     | ALL_CLASSIFIERS | F1       |            20 | RFECV      | QUBO-SA    | 0.162927    | False         |
-| colon     | ALL_CLASSIFIERS | F1       |            20 | RFECV      | QUBO-SB    | 0.514961    | False         |
-| colon     | ALL_CLASSIFIERS | F1       |            20 | Lasso      | QUBO-SA    | 0.00654233  | True          |
-| colon     | ALL_CLASSIFIERS | F1       |            20 | Lasso      | QUBO-SB    | 0.989528    | False         |
-| colon     | ALL_CLASSIFIERS | F1       |            20 | QUBO-SA    | QUBO-SB    | 0.000574883 | True          |
+| Dataset   | Classifier      | Metric   |   K_Reference | Method_A   | Method_B   |    p_value | Significant   |
+|:----------|:----------------|:---------|--------------:|:-----------|:-----------|-----------:|:--------------|
+| colon     | KNN             | F1       |            20 | None       | ANOVA      | 0.509702   | False         |
+| colon     | KNN             | F1       |            20 | None       | RFECV      | 0.998371   | False         |
+| colon     | KNN             | F1       |            20 | None       | Lasso      | 0.979939   | False         |
+| colon     | KNN             | F1       |            20 | None       | QUBO-SA    | 0.98643    | False         |
+| colon     | KNN             | F1       |            20 | None       | QUBO-SB    | 0.971461   | False         |
+| colon     | KNN             | F1       |            20 | ANOVA      | RFECV      | 0.260953   | False         |
+| colon     | KNN             | F1       |            20 | ANOVA      | Lasso      | 0.912817   | False         |
+| colon     | KNN             | F1       |            20 | ANOVA      | QUBO-SA    | 0.15945    | False         |
+| colon     | KNN             | F1       |            20 | ANOVA      | QUBO-SB    | 0.931561   | False         |
+| colon     | KNN             | F1       |            20 | RFECV      | Lasso      | 0.86668    | False         |
+| colon     | KNN             | F1       |            20 | RFECV      | QUBO-SA    | 0.999894   | False         |
+| colon     | KNN             | F1       |            20 | RFECV      | QUBO-SB    | 0.83937    | False         |
+| colon     | KNN             | F1       |            20 | Lasso      | QUBO-SA    | 0.742439   | False         |
+| colon     | KNN             | F1       |            20 | Lasso      | QUBO-SB    | 1          | False         |
+| colon     | KNN             | F1       |            20 | QUBO-SA    | QUBO-SB    | 0.706032   | False         |
+| colon     | CATBOOST        | F1       |            20 | None       | ANOVA      | 0.98643    | False         |
+| colon     | CATBOOST        | F1       |            20 | None       | RFECV      | 0.98643    | False         |
+| colon     | CATBOOST        | F1       |            20 | None       | Lasso      | 0.999894   | False         |
+| colon     | CATBOOST        | F1       |            20 | None       | QUBO-SA    | 0.15945    | False         |
+| colon     | CATBOOST        | F1       |            20 | None       | QUBO-SB    | 0.706032   | False         |
+| colon     | CATBOOST        | F1       |            20 | ANOVA      | RFECV      | 1          | False         |
+| colon     | CATBOOST        | F1       |            20 | ANOVA      | Lasso      | 0.998371   | False         |
+| colon     | CATBOOST        | F1       |            20 | ANOVA      | QUBO-SA    | 0.509702   | False         |
+| colon     | CATBOOST        | F1       |            20 | ANOVA      | QUBO-SB    | 0.971461   | False         |
+| colon     | CATBOOST        | F1       |            20 | RFECV      | Lasso      | 0.998371   | False         |
+| colon     | CATBOOST        | F1       |            20 | RFECV      | QUBO-SA    | 0.509702   | False         |
+| colon     | CATBOOST        | F1       |            20 | RFECV      | QUBO-SB    | 0.971461   | False         |
+| colon     | CATBOOST        | F1       |            20 | Lasso      | QUBO-SA    | 0.260953   | False         |
+| colon     | CATBOOST        | F1       |            20 | Lasso      | QUBO-SB    | 0.83937    | False         |
+| colon     | CATBOOST        | F1       |            20 | QUBO-SA    | QUBO-SB    | 0.931561   | False         |
+| colon     | ALL_CLASSIFIERS | F1       |            20 | None       | ANOVA      | 0.99939    | False         |
+| colon     | ALL_CLASSIFIERS | F1       |            20 | None       | RFECV      | 0.986303   | False         |
+| colon     | ALL_CLASSIFIERS | F1       |            20 | None       | Lasso      | 0.925693   | False         |
+| colon     | ALL_CLASSIFIERS | F1       |            20 | None       | QUBO-SA    | 0.0372206  | True          |
+| colon     | ALL_CLASSIFIERS | F1       |            20 | None       | QUBO-SB    | 0.656107   | False         |
+| colon     | ALL_CLASSIFIERS | F1       |            20 | ANOVA      | RFECV      | 0.918002   | False         |
+| colon     | ALL_CLASSIFIERS | F1       |            20 | ANOVA      | Lasso      | 0.988464   | False         |
+| colon     | ALL_CLASSIFIERS | F1       |            20 | ANOVA      | QUBO-SA    | 0.0126852  | True          |
+| colon     | ALL_CLASSIFIERS | F1       |            20 | ANOVA      | QUBO-SB    | 0.430781   | False         |
+| colon     | ALL_CLASSIFIERS | F1       |            20 | RFECV      | Lasso      | 0.575424   | False         |
+| colon     | ALL_CLASSIFIERS | F1       |            20 | RFECV      | QUBO-SA    | 0.196615   | False         |
+| colon     | ALL_CLASSIFIERS | F1       |            20 | RFECV      | QUBO-SB    | 0.957166   | False         |
+| colon     | ALL_CLASSIFIERS | F1       |            20 | Lasso      | QUBO-SA    | 0.00120415 | True          |
+| colon     | ALL_CLASSIFIERS | F1       |            20 | Lasso      | QUBO-SB    | 0.127379   | False         |
+| colon     | ALL_CLASSIFIERS | F1       |            20 | QUBO-SA    | QUBO-SB    | 0.702802   | False         |
 
 
 ---
@@ -142,69 +157,69 @@ Testes pareados pré-planejados com controle da Taxa de Erro por Família (FWER)
 
 | Dataset   | Classifier      | Metric   | Method_A       | Method_B       |   N_Pairs |   Mean_A |   Mean_B |   Delta_Mean |   Statistic |       p_raw |   Effect_Size_r_rb | Effect_Interpretation   |      p_holm | Significant_Holm   |
 |:----------|:----------------|:---------|:---------------|:---------------|----------:|---------:|---------:|-------------:|------------:|------------:|-------------------:|:------------------------|------------:|:-------------------|
-| colon     | rf              | f1       | QUBO-SA (K=20) | None           |         5 | 0.522063 | 0.727778 |  -0.205714   |         2   | 0.25        |          -0.8      | Grande                  | 1           | False              |
-| colon     | rf              | f1       | QUBO-SA (K=20) | ANOVA (K=20)   |         5 | 0.522063 | 0.744444 |  -0.222381   |         2   | 0.25        |          -0.8      | Grande                  | 1           | False              |
-| colon     | rf              | f1       | QUBO-SA (K=20) | RFECV          |         5 | 0.522063 | 0.794444 |  -0.272381   |         2   | 0.25        |          -0.8      | Grande                  | 1           | False              |
-| colon     | rf              | f1       | QUBO-SA (K=20) | Lasso          |         5 | 0.522063 | 0.782222 |  -0.260159   |         0   | 0.125       |          -1        | Grande                  | 1           | False              |
-| colon     | rf              | f1       | QUBO-SA (K=20) | QUBO-SB (K=20) |         5 | 0.522063 | 0.772222 |  -0.250159   |         2   | 0.25        |          -0.8      | Grande                  | 1           | False              |
-| colon     | rf              | f1       | QUBO-SB (K=20) | None           |         5 | 0.772222 | 0.727778 |   0.0444444  |         0   | 1           |           1        | Grande                  | 1           | False              |
-| colon     | rf              | f1       | QUBO-SB (K=20) | ANOVA (K=20)   |         5 | 0.772222 | 0.744444 |   0.0277778  |         4   | 0.75        |           0.333333 | Médio                   | 1           | False              |
-| colon     | rf              | f1       | QUBO-SB (K=20) | RFECV          |         5 | 0.772222 | 0.794444 |  -0.0222222  |         0   | 1           |          -1        | Grande                  | 1           | False              |
-| colon     | rf              | f1       | QUBO-SB (K=20) | Lasso          |         5 | 0.772222 | 0.782222 |  -0.01       |         4   | 1           |          -0.333333 | Médio                   | 1           | False              |
-| colon     | knn             | f1       | QUBO-SA (K=20) | None           |         5 | 0.631111 | 0.543651 |   0.0874603  |         3   | 0.375       |           0.6      | Grande                  | 1           | False              |
-| colon     | knn             | f1       | QUBO-SA (K=20) | ANOVA (K=20)   |         5 | 0.631111 | 0.743333 |  -0.112222   |         3   | 0.375       |          -0.6      | Grande                  | 1           | False              |
-| colon     | knn             | f1       | QUBO-SA (K=20) | RFECV          |         5 | 0.631111 | 0.666667 |  -0.0355556  |         6   | 0.875       |          -0.2      | Pequeno                 | 1           | False              |
-| colon     | knn             | f1       | QUBO-SA (K=20) | Lasso          |         5 | 0.631111 | 0.820317 |  -0.189206   |         0   | 0.125       |          -1        | Grande                  | 1           | False              |
-| colon     | knn             | f1       | QUBO-SA (K=20) | QUBO-SB (K=20) |         5 | 0.631111 | 0.836984 |  -0.205873   |         0   | 0.125       |          -1        | Grande                  | 1           | False              |
-| colon     | knn             | f1       | QUBO-SB (K=20) | None           |         5 | 0.836984 | 0.543651 |   0.293333   |         0   | 0.125       |           1        | Grande                  | 1           | False              |
-| colon     | knn             | f1       | QUBO-SB (K=20) | ANOVA (K=20)   |         5 | 0.836984 | 0.743333 |   0.0936508  |         0   | 0.25        |           1        | Grande                  | 1           | False              |
-| colon     | knn             | f1       | QUBO-SB (K=20) | RFECV          |         5 | 0.836984 | 0.666667 |   0.170317   |         0   | 0.25        |           1        | Grande                  | 1           | False              |
-| colon     | knn             | f1       | QUBO-SB (K=20) | Lasso          |         5 | 0.836984 | 0.820317 |   0.0166667  |         0   | 1           |           1        | Grande                  | 1           | False              |
-| colon     | svm             | f1       | QUBO-SA (K=20) | None           |         5 | 0.564444 | 0.819596 |  -0.255152   |         0   | 0.125       |          -1        | Grande                  | 1           | False              |
-| colon     | svm             | f1       | QUBO-SA (K=20) | ANOVA (K=20)   |         5 | 0.564444 | 0.786263 |  -0.221818   |         0   | 0.5         |          -1        | Grande                  | 1           | False              |
-| colon     | svm             | f1       | QUBO-SA (K=20) | RFECV          |         5 | 0.564444 | 0.797778 |  -0.233333   |         0   | 0.125       |          -1        | Grande                  | 1           | False              |
-| colon     | svm             | f1       | QUBO-SA (K=20) | Lasso          |         5 | 0.564444 | 0.771111 |  -0.206667   |         0   | 0.25        |          -1        | Grande                  | 1           | False              |
-| colon     | svm             | f1       | QUBO-SA (K=20) | QUBO-SB (K=20) |         5 | 0.564444 | 0.80254  |  -0.238095   |         0   | 0.25        |          -1        | Grande                  | 1           | False              |
-| colon     | svm             | f1       | QUBO-SB (K=20) | None           |         5 | 0.80254  | 0.819596 |  -0.0170563  |         4   | 0.75        |          -0.333333 | Médio                   | 1           | False              |
-| colon     | svm             | f1       | QUBO-SB (K=20) | ANOVA (K=20)   |         5 | 0.80254  | 0.786263 |   0.0162771  |         4   | 1           |           0.333333 | Médio                   | 1           | False              |
-| colon     | svm             | f1       | QUBO-SB (K=20) | RFECV          |         5 | 0.80254  | 0.797778 |   0.0047619  |         4   | 1           |           0.333333 | Médio                   | 1           | False              |
-| colon     | svm             | f1       | QUBO-SB (K=20) | Lasso          |         5 | 0.80254  | 0.771111 |   0.0314286  |         0   | 0.5         |           1        | Grande                  | 1           | False              |
-| colon     | xgboost         | f1       | QUBO-SA (K=20) | None           |         5 | 0.518095 | 0.613333 |  -0.0952381  |         3.5 | 0.5         |          -0.5      | Grande                  | 1           | False              |
-| colon     | xgboost         | f1       | QUBO-SA (K=20) | ANOVA (K=20)   |         5 | 0.518095 | 0.715556 |  -0.19746    |         0   | 0.25        |          -1        | Grande                  | 1           | False              |
-| colon     | xgboost         | f1       | QUBO-SA (K=20) | RFECV          |         5 | 0.518095 | 0.587619 |  -0.0695238  |         2   | 0.25        |          -0.8      | Grande                  | 1           | False              |
-| colon     | xgboost         | f1       | QUBO-SA (K=20) | Lasso          |         5 | 0.518095 | 0.647619 |  -0.129524   |         2   | 0.25        |          -0.8      | Grande                  | 1           | False              |
-| colon     | xgboost         | f1       | QUBO-SA (K=20) | QUBO-SB (K=20) |         5 | 0.518095 | 0.647619 |  -0.129524   |         2   | 0.25        |          -0.8      | Grande                  | 1           | False              |
-| colon     | xgboost         | f1       | QUBO-SB (K=20) | None           |         5 | 0.647619 | 0.613333 |   0.0342857  |         3   | 0.5         |           0.666667 | Grande                  | 1           | False              |
-| colon     | xgboost         | f1       | QUBO-SB (K=20) | ANOVA (K=20)   |         5 | 0.647619 | 0.715556 |  -0.0679365  |         3   | 0.5         |          -0.666667 | Grande                  | 1           | False              |
-| colon     | xgboost         | f1       | QUBO-SB (K=20) | RFECV          |         5 | 0.647619 | 0.587619 |   0.06       |         0   | 0.25        |           1        | Grande                  | 1           | False              |
-| colon     | xgboost         | f1       | QUBO-SB (K=20) | Lasso          |         5 | 0.647619 | 0.647619 |   0          |         0   | 1           |           0        | Negligível              | 1           | False              |
-| colon     | catboost        | f1       | QUBO-SA (K=20) | None           |         5 | 0.557143 | 0.798889 |  -0.241746   |         0   | 0.25        |          -1        | Grande                  | 1           | False              |
-| colon     | catboost        | f1       | QUBO-SA (K=20) | ANOVA (K=20)   |         5 | 0.557143 | 0.761111 |  -0.203968   |         0   | 0.5         |          -1        | Grande                  | 1           | False              |
-| colon     | catboost        | f1       | QUBO-SA (K=20) | RFECV          |         5 | 0.557143 | 0.781111 |  -0.223968   |         0   | 0.25        |          -1        | Grande                  | 1           | False              |
-| colon     | catboost        | f1       | QUBO-SA (K=20) | Lasso          |         5 | 0.557143 | 0.786667 |  -0.229524   |         2   | 0.25        |          -0.8      | Grande                  | 1           | False              |
-| colon     | catboost        | f1       | QUBO-SA (K=20) | QUBO-SB (K=20) |         5 | 0.557143 | 0.83254  |  -0.275397   |         0   | 0.125       |          -1        | Grande                  | 1           | False              |
-| colon     | catboost        | f1       | QUBO-SB (K=20) | None           |         5 | 0.83254  | 0.798889 |   0.0336508  |         4   | 0.75        |           0.333333 | Médio                   | 1           | False              |
-| colon     | catboost        | f1       | QUBO-SB (K=20) | ANOVA (K=20)   |         5 | 0.83254  | 0.761111 |   0.0714286  |         0   | 0.5         |           1        | Grande                  | 1           | False              |
-| colon     | catboost        | f1       | QUBO-SB (K=20) | RFECV          |         5 | 0.83254  | 0.781111 |   0.0514286  |         3   | 0.5         |           0.666667 | Grande                  | 1           | False              |
-| colon     | catboost        | f1       | QUBO-SB (K=20) | Lasso          |         5 | 0.83254  | 0.786667 |   0.045873   |         4   | 0.5         |           0.4      | Médio                   | 1           | False              |
-| colon     | opf             | f1       | QUBO-SA (K=20) | None           |         5 | 0.588095 | 0.611905 |  -0.0238095  |         7   | 1           |           0        | Negligível              | 1           | False              |
-| colon     | opf             | f1       | QUBO-SA (K=20) | ANOVA (K=20)   |         5 | 0.588095 | 0.65873  |  -0.0706349  |         4   | 0.4375      |          -0.466667 | Médio                   | 1           | False              |
-| colon     | opf             | f1       | QUBO-SA (K=20) | RFECV          |         5 | 0.588095 | 0.638571 |  -0.0504762  |         5   | 0.625       |          -0.333333 | Médio                   | 1           | False              |
-| colon     | opf             | f1       | QUBO-SA (K=20) | Lasso          |         5 | 0.588095 | 0.748095 |  -0.16       |         0   | 0.125       |          -1        | Grande                  | 1           | False              |
-| colon     | opf             | f1       | QUBO-SA (K=20) | QUBO-SB (K=20) |         5 | 0.588095 | 0.745714 |  -0.157619   |         0   | 0.125       |          -1        | Grande                  | 1           | False              |
-| colon     | opf             | f1       | QUBO-SB (K=20) | None           |         5 | 0.745714 | 0.611905 |   0.13381    |         0   | 0.125       |           1        | Grande                  | 1           | False              |
-| colon     | opf             | f1       | QUBO-SB (K=20) | ANOVA (K=20)   |         5 | 0.745714 | 0.65873  |   0.0869841  |         3   | 0.3125      |           0.6      | Grande                  | 1           | False              |
-| colon     | opf             | f1       | QUBO-SB (K=20) | RFECV          |         5 | 0.745714 | 0.638571 |   0.107143   |         2   | 0.25        |           0.8      | Grande                  | 1           | False              |
-| colon     | opf             | f1       | QUBO-SB (K=20) | Lasso          |         5 | 0.745714 | 0.748095 |  -0.00238095 |         6.5 | 1           |          -0.1      | Pequeno                 | 1           | False              |
-| colon     | All_Classifiers | f1       | QUBO-SA (K=20) | None           |        30 | 0.563492 | 0.685859 |  -0.122367   |       112.5 | 0.0280093   |          -0.539855 | Grande                  | 0.0915993   | False              |
-| colon     | All_Classifiers | f1       | QUBO-SA (K=20) | ANOVA (K=20)   |        30 | 0.563492 | 0.734906 |  -0.171414   |        62.5 | 0.00276509  |          -0.785714 | Grande                  | 0.0193556   | True               |
-| colon     | All_Classifiers | f1       | QUBO-SA (K=20) | RFECV          |        30 | 0.563492 | 0.711032 |  -0.14754    |        78.5 | 0.00301446  |          -0.716667 | Grande                  | 0.0193556   | True               |
-| colon     | All_Classifiers | f1       | QUBO-SA (K=20) | Lasso          |        30 | 0.563492 | 0.759339 |  -0.195847   |        23   | 5.08576e-05 |          -0.934783 | Grande                  | 0.000406861 | True               |
-| colon     | All_Classifiers | f1       | QUBO-SA (K=20) | QUBO-SB (K=20) |        30 | 0.563492 | 0.772937 |  -0.209444   |        20.5 | 4.06626e-05 |          -0.952899 | Grande                  | 0.000365964 | True               |
-| colon     | All_Classifiers | f1       | QUBO-SB (K=20) | None           |        30 | 0.772937 | 0.685859 |   0.0870779  |        67.5 | 0.00723079  |           0.77193  | Grande                  | 0.036154    | True               |
-| colon     | All_Classifiers | f1       | QUBO-SB (K=20) | ANOVA (K=20)   |        30 | 0.772937 | 0.734906 |   0.0380303  |       115   | 0.0941761   |           0.497076 | Médio                   | 0.188352    | False              |
-| colon     | All_Classifiers | f1       | QUBO-SB (K=20) | RFECV          |        30 | 0.772937 | 0.711032 |   0.0619048  |        75.5 | 0.0228998   |           0.713235 | Grande                  | 0.0915993   | False              |
-| colon     | All_Classifiers | f1       | QUBO-SB (K=20) | Lasso          |        30 | 0.772937 | 0.759339 |   0.0135979  |       102   | 0.217284    |           0.252747 | Pequeno                 | 0.217284    | False              |
+| colon     | rf              | f1       | QUBO-SA (K=20) | None           |        10 | 0.466667 | 0.736667 |   -0.27      |         9   | 0.109375    |        -0.785714   | Grande                  | 0.65625     | False              |
+| colon     | rf              | f1       | QUBO-SA (K=20) | ANOVA (K=20)   |        10 | 0.466667 | 0.703333 |   -0.236667  |         5   | 0.0625      |        -0.904762   | Grande                  | 0.5         | False              |
+| colon     | rf              | f1       | QUBO-SA (K=20) | RFECV          |        10 | 0.466667 | 0.686667 |   -0.22      |         5   | 0.0625      |        -0.904762   | Grande                  | 0.5         | False              |
+| colon     | rf              | f1       | QUBO-SA (K=20) | Lasso          |        10 | 0.466667 | 0.816667 |   -0.35      |         4   | 0.03125     |        -0.928571   | Grande                  | 0.28125     | False              |
+| colon     | rf              | f1       | QUBO-SA (K=20) | QUBO-SB (K=20) |        10 | 0.466667 | 0.643333 |   -0.176667  |        11   | 0.25        |        -0.714286   | Grande                  | 1           | False              |
+| colon     | rf              | f1       | QUBO-SB (K=20) | None           |        10 | 0.643333 | 0.736667 |   -0.0933333 |         0   | 0.5         |        -1          | Grande                  | 1           | False              |
+| colon     | rf              | f1       | QUBO-SB (K=20) | ANOVA (K=20)   |        10 | 0.643333 | 0.703333 |   -0.06      |         9   | 0.75        |        -0.333333   | Médio                   | 1           | False              |
+| colon     | rf              | f1       | QUBO-SB (K=20) | RFECV          |        10 | 0.643333 | 0.686667 |   -0.0433333 |         9   | 0.5         |        -0.4        | Médio                   | 1           | False              |
+| colon     | rf              | f1       | QUBO-SB (K=20) | Lasso          |        10 | 0.643333 | 0.816667 |   -0.173333  |         0   | 0.125       |        -1          | Grande                  | 0.65625     | False              |
+| colon     | knn             | f1       | QUBO-SA (K=20) | None           |        10 | 0.35     | 0.456667 |   -0.106667  |        15   | 0.46875     |        -0.333333   | Médio                   | 1           | False              |
+| colon     | knn             | f1       | QUBO-SA (K=20) | ANOVA (K=20)   |        10 | 0.35     | 0.79     |   -0.44      |         0   | 0.015625    |        -1          | Grande                  | 0.140625    | False              |
+| colon     | knn             | f1       | QUBO-SA (K=20) | RFECV          |        10 | 0.35     | 0.406667 |   -0.0566667 |        20   | 0.6875      |        -0.214286   | Pequeno                 | 1           | False              |
+| colon     | knn             | f1       | QUBO-SA (K=20) | Lasso          |        10 | 0.35     | 0.59     |   -0.24      |         7.5 | 0.15625     |        -0.666667   | Grande                  | 1           | False              |
+| colon     | knn             | f1       | QUBO-SA (K=20) | QUBO-SB (K=20) |        10 | 0.35     | 0.616667 |   -0.266667  |        11   | 0.1875      |        -0.642857   | Grande                  | 1           | False              |
+| colon     | knn             | f1       | QUBO-SB (K=20) | None           |        10 | 0.616667 | 0.456667 |    0.16      |         7   | 0.25        |         0.8        | Grande                  | 1           | False              |
+| colon     | knn             | f1       | QUBO-SB (K=20) | ANOVA (K=20)   |        10 | 0.616667 | 0.79     |   -0.173333  |         0   | 0.25        |        -1          | Grande                  | 1           | False              |
+| colon     | knn             | f1       | QUBO-SB (K=20) | RFECV          |        10 | 0.616667 | 0.406667 |    0.21      |         8.5 | 0.1875      |         0.571429   | Grande                  | 1           | False              |
+| colon     | knn             | f1       | QUBO-SB (K=20) | Lasso          |        10 | 0.616667 | 0.59     |    0.0266667 |        16.5 | 0.8125      |         0.133333   | Pequeno                 | 1           | False              |
+| colon     | svm             | f1       | QUBO-SA (K=20) | None           |        10 | 0.653333 | 0.75     |   -0.0966667 |        11.5 | 0.234375    |        -0.607143   | Grande                  | 1           | False              |
+| colon     | svm             | f1       | QUBO-SA (K=20) | ANOVA (K=20)   |        10 | 0.653333 | 0.77     |   -0.116667  |         7   | 0.15625     |        -0.714286   | Grande                  | 1           | False              |
+| colon     | svm             | f1       | QUBO-SA (K=20) | RFECV          |        10 | 0.653333 | 0.686667 |   -0.0333333 |        15   | 0.6875      |        -0.333333   | Médio                   | 1           | False              |
+| colon     | svm             | f1       | QUBO-SA (K=20) | Lasso          |        10 | 0.653333 | 0.723333 |   -0.07      |         8.5 | 0.5         |        -0.5        | Grande                  | 1           | False              |
+| colon     | svm             | f1       | QUBO-SA (K=20) | QUBO-SB (K=20) |        10 | 0.653333 | 0.643333 |    0.01      |        23.5 | 0.953125    |        -0.0357143  | Negligível              | 1           | False              |
+| colon     | svm             | f1       | QUBO-SB (K=20) | None           |        10 | 0.643333 | 0.75     |   -0.106667  |         9   | 0.5         |        -0.4        | Médio                   | 1           | False              |
+| colon     | svm             | f1       | QUBO-SB (K=20) | ANOVA (K=20)   |        10 | 0.643333 | 0.77     |   -0.126667  |         9   | 0.3125      |        -0.466667   | Médio                   | 1           | False              |
+| colon     | svm             | f1       | QUBO-SB (K=20) | RFECV          |        10 | 0.643333 | 0.686667 |   -0.0433333 |         9   | 0.75        |        -0.333333   | Médio                   | 1           | False              |
+| colon     | svm             | f1       | QUBO-SB (K=20) | Lasso          |        10 | 0.643333 | 0.723333 |   -0.08      |        16   | 0.75        |        -0.2        | Pequeno                 | 1           | False              |
+| colon     | xgboost         | f1       | QUBO-SA (K=20) | None           |        10 | 0.556667 | 0.706667 |   -0.15      |        13.5 | 0.226562    |        -0.472222   | Médio                   | 1           | False              |
+| colon     | xgboost         | f1       | QUBO-SA (K=20) | ANOVA (K=20)   |        10 | 0.556667 | 0.653333 |   -0.0966667 |        14   | 0.328125    |        -0.428571   | Médio                   | 1           | False              |
+| colon     | xgboost         | f1       | QUBO-SA (K=20) | RFECV          |        10 | 0.556667 | 0.706667 |   -0.15      |        13.5 | 0.21875     |        -0.472222   | Médio                   | 1           | False              |
+| colon     | xgboost         | f1       | QUBO-SA (K=20) | Lasso          |        10 | 0.556667 | 0.72     |   -0.163333  |        13.5 | 0.226562    |        -0.472222   | Médio                   | 1           | False              |
+| colon     | xgboost         | f1       | QUBO-SA (K=20) | QUBO-SB (K=20) |        10 | 0.556667 | 0.669048 |   -0.112381  |        18   | 0.46875     |        -0.333333   | Médio                   | 1           | False              |
+| colon     | xgboost         | f1       | QUBO-SB (K=20) | None           |        10 | 0.669048 | 0.706667 |   -0.037619  |        15.5 | 0.390625    |        -0.321429   | Médio                   | 1           | False              |
+| colon     | xgboost         | f1       | QUBO-SB (K=20) | ANOVA (K=20)   |        10 | 0.669048 | 0.653333 |    0.0157143 |        25.5 | 0.976562    |        -0.0277778  | Negligível              | 1           | False              |
+| colon     | xgboost         | f1       | QUBO-SB (K=20) | RFECV          |        10 | 0.669048 | 0.706667 |   -0.037619  |        22   | 0.71875     |        -0.111111   | Pequeno                 | 1           | False              |
+| colon     | xgboost         | f1       | QUBO-SB (K=20) | Lasso          |        10 | 0.669048 | 0.72     |   -0.0509524 |        15   | 0.375       |        -0.357143   | Médio                   | 1           | False              |
+| colon     | catboost        | f1       | QUBO-SA (K=20) | None           |        10 | 0.483333 | 0.77     |   -0.286667  |         0   | 0.03125     |        -1          | Grande                  | 0.28125     | False              |
+| colon     | catboost        | f1       | QUBO-SA (K=20) | ANOVA (K=20)   |        10 | 0.483333 | 0.716667 |   -0.233333  |         5.5 | 0.09375     |        -0.857143   | Grande                  | 0.65625     | False              |
+| colon     | catboost        | f1       | QUBO-SA (K=20) | RFECV          |        10 | 0.483333 | 0.716667 |   -0.233333  |         5.5 | 0.09375     |        -0.857143   | Grande                  | 0.65625     | False              |
+| colon     | catboost        | f1       | QUBO-SA (K=20) | Lasso          |        10 | 0.483333 | 0.75     |   -0.266667  |         0   | 0.03125     |        -1          | Grande                  | 0.28125     | False              |
+| colon     | catboost        | f1       | QUBO-SA (K=20) | QUBO-SB (K=20) |        10 | 0.483333 | 0.643333 |   -0.16      |         7.5 | 0.09375     |        -0.678571   | Grande                  | 0.65625     | False              |
+| colon     | catboost        | f1       | QUBO-SB (K=20) | None           |        10 | 0.643333 | 0.77     |   -0.126667  |         0   | 0.125       |        -1          | Grande                  | 0.65625     | False              |
+| colon     | catboost        | f1       | QUBO-SB (K=20) | ANOVA (K=20)   |        10 | 0.643333 | 0.716667 |   -0.0733333 |         9.5 | 0.375       |        -0.4        | Médio                   | 0.75        | False              |
+| colon     | catboost        | f1       | QUBO-SB (K=20) | RFECV          |        10 | 0.643333 | 0.716667 |   -0.0733333 |         9.5 | 0.375       |        -0.4        | Médio                   | 0.75        | False              |
+| colon     | catboost        | f1       | QUBO-SB (K=20) | Lasso          |        10 | 0.643333 | 0.75     |   -0.106667  |         0   | 0.125       |        -1          | Grande                  | 0.65625     | False              |
+| colon     | opf             | f1       | QUBO-SA (K=20) | None           |        10 | 0.523333 | 0.62     |   -0.0966667 |        13   | 0.4375      |        -0.6        | Grande                  | 1           | False              |
+| colon     | opf             | f1       | QUBO-SA (K=20) | ANOVA (K=20)   |        10 | 0.523333 | 0.653333 |   -0.13      |         6   | 0.125       |        -0.866667   | Grande                  | 0.875       | False              |
+| colon     | opf             | f1       | QUBO-SA (K=20) | RFECV          |        10 | 0.523333 | 0.583333 |   -0.06      |        19.5 | 0.65625     |        -0.25       | Pequeno                 | 1           | False              |
+| colon     | opf             | f1       | QUBO-SA (K=20) | Lasso          |        10 | 0.523333 | 0.76     |   -0.236667  |         4   | 0.03125     |        -0.928571   | Grande                  | 0.28125     | False              |
+| colon     | opf             | f1       | QUBO-SA (K=20) | QUBO-SB (K=20) |        10 | 0.523333 | 0.506667 |    0.0166667 |        22.5 | 0.890625    |         0.0357143  | Negligível              | 1           | False              |
+| colon     | opf             | f1       | QUBO-SB (K=20) | None           |        10 | 0.506667 | 0.62     |   -0.113333  |        15   | 0.375       |        -0.357143   | Médio                   | 1           | False              |
+| colon     | opf             | f1       | QUBO-SB (K=20) | ANOVA (K=20)   |        10 | 0.506667 | 0.653333 |   -0.146667  |        11   | 0.25        |        -0.714286   | Grande                  | 1           | False              |
+| colon     | opf             | f1       | QUBO-SB (K=20) | RFECV          |        10 | 0.506667 | 0.583333 |   -0.0766667 |        21   | 0.625       |        -0.166667   | Pequeno                 | 1           | False              |
+| colon     | opf             | f1       | QUBO-SB (K=20) | Lasso          |        10 | 0.506667 | 0.76     |   -0.253333  |         6   | 0.0625      |        -0.785714   | Grande                  | 0.5         | False              |
+| colon     | All_Classifiers | f1       | QUBO-SA (K=20) | None           |        60 | 0.505556 | 0.673333 |   -0.167778  |       343   | 0.000580358 |        -0.658974   | Grande                  | 0.00406251  | True               |
+| colon     | All_Classifiers | f1       | QUBO-SA (K=20) | ANOVA (K=20)   |        60 | 0.505556 | 0.714444 |   -0.208889  |       198.5 | 1.12399e-05 |        -0.827881   | Grande                  | 0.000101159 | True               |
+| colon     | All_Classifiers | f1       | QUBO-SA (K=20) | RFECV          |        60 | 0.505556 | 0.631111 |   -0.125556  |       434.5 | 0.00593326  |        -0.532051   | Grande                  | 0.0355995   | True               |
+| colon     | All_Classifiers | f1       | QUBO-SA (K=20) | Lasso          |        60 | 0.505556 | 0.726667 |   -0.221111  |       212   | 1.29904e-05 |        -0.784076   | Grande                  | 0.000103923 | True               |
+| colon     | All_Classifiers | f1       | QUBO-SA (K=20) | QUBO-SB (K=20) |        60 | 0.505556 | 0.620397 |   -0.114841  |       544   | 0.0328902   |        -0.433001   | Médio                   | 0.0986707   | False              |
+| colon     | All_Classifiers | f1       | QUBO-SB (K=20) | None           |        60 | 0.620397 | 0.673333 |   -0.0529365 |       396.5 | 0.0415117   |        -0.307882   | Médio                   | 0.0986707   | False              |
+| colon     | All_Classifiers | f1       | QUBO-SB (K=20) | ANOVA (K=20)   |        60 | 0.620397 | 0.714444 |   -0.0940476 |       390.5 | 0.0212955   |        -0.48172    | Médio                   | 0.085182    | False              |
+| colon     | All_Classifiers | f1       | QUBO-SB (K=20) | RFECV          |        60 | 0.620397 | 0.631111 |   -0.0107143 |       659.5 | 0.538217    |        -0.00672269 | Negligível              | 0.538217    | False              |
+| colon     | All_Classifiers | f1       | QUBO-SB (K=20) | Lasso          |        60 | 0.620397 | 0.726667 |   -0.10627   |       368.5 | 0.00752193  |        -0.452652   | Médio                   | 0.0376097   | True               |
 
 
 ---
@@ -214,27 +229,45 @@ Testes pareados pré-planejados com controle da Taxa de Erro por Família (FWER)
 
 | Dataset   | Method   |    K | Method_Label    |   Original_p |   Mean_Features |   Std_Features |   Reduction_pct |   F1_Mean |   Accuracy_Mean |   Runtime_Selection_s |   Runtime_Training_s |   Runtime_Total_s |
 |:----------|:---------|-----:|:----------------|-------------:|----------------:|---------------:|----------------:|----------:|----------------:|----------------------:|---------------------:|------------------:|
-| colon     | None     |  nan | None            |         2000 |          2000   |       0        |            0    |  0.685859 |        0.801496 |           0.000157838 |             8.28146  |          8.28162  |
-| colon     | ANOVA    |   10 | ANOVA (K=10)    |         2000 |            10   |       0        |           99.5  |  0.735688 |        0.839957 |           0.0386407   |             0.320714 |          0.359355 |
-| colon     | ANOVA    |   20 | ANOVA (K=20)    |         2000 |            20   |       0        |           99    |  0.734906 |        0.832479 |           0.00458985  |             0.302987 |          0.307577 |
-| colon     | ANOVA    |   50 | ANOVA (K=50)    |         2000 |            50   |       0        |           97.5  |  0.775012 |        0.848932 |           0.00568164  |             0.390977 |          0.396659 |
-| colon     | ANOVA    |  100 | ANOVA (K=100)   |         2000 |           100   |       0        |           95    |  0.749348 |        0.833547 |           0.00540648  |             0.563689 |          0.569096 |
-| colon     | RFECV    |  600 | RFECV (K=600)   |         2000 |           600   |       0        |           70    |  0.783201 |        0.854701 |           9.44278     |             2.00188  |         11.4447   |
-| colon     | RFECV    | 2000 | RFECV (K=2000)  |         2000 |          2000   |       0        |            0    |  0.669974 |        0.801282 |          14.1472      |             5.39604  |         19.5433   |
-| colon     | RFECV    |  400 | RFECV (K=400)   |         2000 |           400   |       0        |           80    |  0.64881  |        0.777778 |           9.6526      |             1.30837  |         10.961    |
-| colon     | Lasso    |   58 | Lasso (K=58)    |         2000 |            58   |       0        |           97.1  |  0.808201 |        0.884615 |           0.712609    |             0.480852 |          1.19346  |
-| colon     | Lasso    |   36 | Lasso (K=36)    |         2000 |            36   |       0        |           98.2  |  0.777778 |        0.833333 |           1.01554     |             0.41401  |          1.42955  |
-| colon     | Lasso    |  719 | Lasso (K=719)   |         2000 |           719   |       0        |           64.05 |  0.666667 |        0.75     |           0.593766    |             1.91306  |          2.50683  |
-| colon     | Lasso    |   57 | Lasso (K=57)    |         2000 |            57   |       0        |           97.15 |  0.699603 |        0.847222 |           0.906993    |             0.441462 |          1.34845  |
-| colon     | Lasso    |  618 | Lasso (K=618)   |         2000 |           618   |       0        |           69.1  |  0.844444 |        0.875    |           0.675862    |             1.88818  |          2.56404  |
-| colon     | QUBO-SA  |   10 | QUBO-SA (K=10)  |         2000 |            10   |       0        |           99.5  |  0.587088 |        0.740598 |           9.34748     |             0.260637 |          9.60812  |
-| colon     | QUBO-SA  |   20 | QUBO-SA (K=20)  |         2000 |            19.4 |       0.498273 |           99.03 |  0.563492 |        0.743376 |           6.83749     |             0.321604 |          7.1591   |
-| colon     | QUBO-SA  |   50 | QUBO-SA (K=50)  |         2000 |            48.8 |       0.406838 |           97.56 |  0.529365 |        0.721368 |           7.09997     |             0.427886 |          7.52786  |
-| colon     | QUBO-SA  |  100 | QUBO-SA (K=100) |         2000 |            97   |       0        |           95.15 |  0.547302 |        0.723718 |           7.12518     |             0.556199 |          7.68138  |
-| colon     | QUBO-SB  |   10 | QUBO-SB (K=10)  |         2000 |             6.6 |       4.24751  |           99.67 |  0.482049 |        0.70812  |          10.3273      |             0.232074 |         10.5594   |
-| colon     | QUBO-SB  |   20 | QUBO-SB (K=20)  |         2000 |            20   |       0        |           99    |  0.772937 |        0.85235  |           9.10197     |             0.325988 |          9.42796  |
-| colon     | QUBO-SB  |   50 | QUBO-SB (K=50)  |         2000 |            40.4 |      21.782    |           97.98 |  0.534858 |        0.751709 |           8.82899     |             0.392507 |          9.2215   |
-| colon     | QUBO-SB  |  100 | QUBO-SB (K=100) |         2000 |            73.6 |      58.0604   |           96.32 |  0.468105 |        0.712607 |           8.7855      |             0.440564 |          9.22607  |
+| colon     | None     |  nan | None            |         2000 |            2000 |              0 |            0    |  0.673333 |        0.817063 |            3.3323e-05 |             8.98654  |          8.98658  |
+| colon     | ANOVA    |    5 | ANOVA (K=5)     |         2000 |               5 |              0 |           99.75 |  0.732222 |        0.834524 |            0.00149012 |             0.255352 |          0.256842 |
+| colon     | ANOVA    |   10 | ANOVA (K=10)    |         2000 |              10 |              0 |           99.5  |  0.719444 |        0.837302 |            0.00154498 |             0.271147 |          0.272692 |
+| colon     | ANOVA    |   15 | ANOVA (K=15)    |         2000 |              15 |              0 |           99.25 |  0.707778 |        0.834127 |            0.00159033 |             0.291637 |          0.293228 |
+| colon     | ANOVA    |   20 | ANOVA (K=20)    |         2000 |              20 |              0 |           99    |  0.714444 |        0.834524 |            0.00154561 |             0.326571 |          0.328117 |
+| colon     | ANOVA    |   25 | ANOVA (K=25)    |         2000 |              25 |              0 |           98.75 |  0.732222 |        0.848413 |            0.00152971 |             0.343703 |          0.345232 |
+| colon     | ANOVA    |   50 | ANOVA (K=50)    |         2000 |              50 |              0 |           97.5  |  0.763889 |        0.853968 |            0.00150408 |             0.425964 |          0.427468 |
+| colon     | ANOVA    |  100 | ANOVA (K=100)   |         2000 |             100 |              0 |           95    |  0.727222 |        0.840476 |            0.0015084  |             0.599863 |          0.601371 |
+| colon     | RFECV    | 1600 | RFECV (K=1600)  |         2000 |            1600 |              0 |           20    |  0.725    |        0.85119  |            1.24581    |             6.86299  |          8.1088   |
+| colon     | RFECV    | 1800 | RFECV (K=1800)  |         2000 |            1800 |              0 |           10    |  0.65     |        0.809524 |            1.24288    |             7.63383  |          8.87671  |
+| colon     | RFECV    |  400 | RFECV (K=400)   |         2000 |             400 |              0 |           80    |  0.777778 |        0.833333 |            1.44714    |             1.67898  |          3.12612  |
+| colon     | RFECV    |  600 | RFECV (K=600)   |         2000 |             600 |              0 |           70    |  0.5      |        0.75     |            1.41006    |             2.62108  |          4.03114  |
+| colon     | RFECV    |  800 | RFECV (K=800)   |         2000 |             800 |              0 |           60    |  0.75     |        0.805556 |            1.41533    |             3.32384  |          4.73917  |
+| colon     | RFECV    | 2000 | RFECV (K=2000)  |         2000 |            2000 |              0 |            0    |  0.65     |        0.75     |            1.18119    |             8.68102  |          9.86222  |
+| colon     | RFECV    | 1000 | RFECV (K=1000)  |         2000 |            1000 |              0 |           50    |  0.441667 |        0.777778 |            1.34872    |             4.12596  |          5.47467  |
+| colon     | Lasso    |   55 | Lasso (K=55)    |         2000 |              55 |              0 |           97.25 |  0.9      |        0.928571 |            0.850957   |             0.433883 |          1.28484  |
+| colon     | Lasso    |  651 | Lasso (K=651)   |         2000 |             651 |              0 |           67.45 |  0.683333 |        0.833333 |            0.773665   |             2.69118  |          3.46485  |
+| colon     | Lasso    |   57 | Lasso (K=57)    |         2000 |              57 |              0 |           97.15 |  0.833333 |        0.861111 |            0.929641   |             0.453877 |          1.38352  |
+| colon     | Lasso    |   47 | Lasso (K=47)    |         2000 |              47 |              0 |           97.65 |  0.888889 |        0.944444 |            0.913821   |             0.412986 |          1.32681  |
+| colon     | Lasso    |   51 | Lasso (K=51)    |         2000 |              51 |              0 |           97.45 |  0.8      |        0.833333 |            0.833924   |             0.435475 |          1.2694   |
+| colon     | Lasso    |   46 | Lasso (K=46)    |         2000 |              46 |              0 |           97.7  |  0.5      |        0.666667 |            0.802209   |             0.418165 |          1.22037  |
+| colon     | Lasso    |   53 | Lasso (K=53)    |         2000 |              53 |              0 |           97.35 |  1        |        1        |            0.883284   |             0.441064 |          1.32435  |
+| colon     | Lasso    | 1760 | Lasso (K=1760)  |         2000 |            1760 |              0 |           12    |  0.222222 |        0.722222 |            0.765137   |             8.24976  |          9.0149   |
+| colon     | Lasso    |   48 | Lasso (K=48)    |         2000 |              48 |              0 |           97.6  |  0.8      |        0.833333 |            0.879548   |             0.416917 |          1.29647  |
+| colon     | Lasso    | 1934 | Lasso (K=1934)  |         2000 |            1934 |              0 |            3.3  |  0.638889 |        0.805556 |            0.702305   |             8.51043  |          9.21273  |
+| colon     | QUBO-SA  |    5 | QUBO-SA (K=5)   |         2000 |               5 |              0 |           99.75 |  0.383333 |        0.661905 |            8.41349    |             0.255583 |          8.66907  |
+| colon     | QUBO-SA  |   10 | QUBO-SA (K=10)  |         2000 |              10 |              0 |           99.5  |  0.645556 |        0.760317 |            8.38419    |             0.273481 |          8.65767  |
+| colon     | QUBO-SA  |   15 | QUBO-SA (K=15)  |         2000 |              15 |              0 |           99.25 |  0.542857 |        0.704365 |            8.50308    |             0.290368 |          8.79345  |
+| colon     | QUBO-SA  |   20 | QUBO-SA (K=20)  |         2000 |              20 |              0 |           99    |  0.505556 |        0.745635 |            8.62496    |             0.331974 |          8.95694  |
+| colon     | QUBO-SA  |   25 | QUBO-SA (K=25)  |         2000 |              25 |              0 |           98.75 |  0.602778 |        0.787302 |            8.68929    |             0.348891 |          9.03818  |
+| colon     | QUBO-SA  |   50 | QUBO-SA (K=50)  |         2000 |              50 |              0 |           97.5  |  0.515556 |        0.729365 |            9.13814    |             0.432569 |          9.57071  |
+| colon     | QUBO-SA  |  100 | QUBO-SA (K=100) |         2000 |             100 |              0 |           95    |  0.602302 |        0.773016 |           10.1403     |             0.608172 |         10.7484   |
+| colon     | QUBO-SB  |    5 | QUBO-SB (K=5)   |         2000 |               5 |              0 |           99.75 |  0.637063 |        0.79881  |            5.17392    |             0.250724 |          5.42464  |
+| colon     | QUBO-SB  |   10 | QUBO-SB (K=10)  |         2000 |              10 |              0 |           99.5  |  0.57119  |        0.74881  |            4.95215    |             0.269192 |          5.22134  |
+| colon     | QUBO-SB  |   15 | QUBO-SB (K=15)  |         2000 |              15 |              0 |           99.25 |  0.68     |        0.823413 |            4.91185    |             0.284919 |          5.19677  |
+| colon     | QUBO-SB  |   20 | QUBO-SB (K=20)  |         2000 |              20 |              0 |           99    |  0.620397 |        0.768254 |            5.04373    |             0.324544 |          5.36827  |
+| colon     | QUBO-SB  |   25 | QUBO-SB (K=25)  |         2000 |              25 |              0 |           98.75 |  0.609286 |        0.761111 |            4.94335    |             0.341756 |          5.2851   |
+| colon     | QUBO-SB  |   50 | QUBO-SB (K=50)  |         2000 |              50 |              0 |           97.5  |  0.63246  |        0.77619  |            5.10081    |             0.427949 |          5.52876  |
+| colon     | QUBO-SB  |  100 | QUBO-SB (K=100) |         2000 |             100 |              0 |           95    |  0.6      |        0.754762 |            5.08237    |             0.611063 |          5.69343  |
 
 
 ---
