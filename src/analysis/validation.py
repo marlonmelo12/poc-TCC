@@ -135,6 +135,7 @@ def check_paired_completeness(
     classifier: str,
     methods: List[str],
     metric: str = "f1",
+    min_folds: int = 5,
 ) -> Tuple[bool, List[int], Dict[str, Any]]:
     """
     Verifies if all specified methods have complete paired fold evaluations
@@ -171,4 +172,4 @@ def check_paired_completeness(
         "method_fold_counts": {m: len(s) for m, s in method_folds.items()},
     }
 
-    return all_methods_full and len(common_folds) >= 5, common_folds, info
+    return all_methods_full and len(common_folds) >= min_folds, common_folds, info
