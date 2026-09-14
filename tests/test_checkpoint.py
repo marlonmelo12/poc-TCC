@@ -69,3 +69,46 @@ def test_checkpoint_save_and_immediate_flush(tmp_path):
         assert len(lines) == 1
         loaded = json.loads(lines[0])
         assert loaded["method"] == "QUBO-SB"
+
+
+def test_symmetric_seed_execution_qubo_sa_and_sb(tmp_path):
+    """Verify that multi-seed execution produces strictly symmetric observations for SA and SB."""
+    import numpy as np
+    from src.pipeline.experiment import run_experiment_fold
+
+    checkpoint_file = str(tmp_path / "multi_seed_test.jsonl")
+    cm = CheckpointManager(filepath=checkpoint_file)
+
+    np.random.seed(42)
+    X_tr = np.random.randn(20, 10)
+    y_tr = np.random.randint(0, 2, size=20)
+    X_te = np.random.randn(5, 10)
+    y_te = np.random.randint(0, 2, size=5)
+
+    test_seeds = [42, 43]
+    run_experiment_fold(
+        dataset_name="synthetic",
+        fold_idx=0,
+        X_train=X_tr,
+        y_train=y_tr,
+        X_test=X_te,
+        y_test=y_te,
+        methods=["QUBO-SA", "QUBO-SB"],
+        classifiers=["rf"],
+        k_grid=[5],
+        seeds=test_seeds,
+        checkpoint_mgr=cm,
+    )
+
+    df_results = cm.load_all_results()
+    assert len(df_results) == 4  # 2 methods x 2 seeds x 1 classifier x 1 K
+
+    sa_records = df_results[df_results["method"] == "QUBO-SA"]
+    sb_records = df_results[df_results["method"] == "QUBO-SB"]
+
+    assert len(sa_records) == len(sb_records) == len(test_seeds), (
+        f"Asymmetric seed execution! SA has {len(sa_records)}, SB has {len(sb_records)}"
+    )
+    assert set(sa_records["seed"].unique()) == set(test_seeds)
+    assert set(sb_records["seed"].unique()) == set(test_seeds)
+

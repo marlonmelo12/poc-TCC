@@ -116,22 +116,22 @@ def run_experiment_fold(
 
         elif method_clean in ["QUBO-SB", "QUBO_SB"]:
             for K in k_grid:
-                # SB evaluated on primary seed
-                selector = QUBOFeatureSelector(
-                    solver_name="QUBO-SB",
-                    K=K,
-                    seed=42,
-                    precomputed_mrmr=precomputed_mrmr,
-                )
-                try:
-                    selector.fit(X_train_scaled, y_train)
-                    _evaluate_selector_on_classifiers(
-                        dataset_name, fold_idx, "QUBO-SB", selector, K, 42,
-                        X_train_scaled, y_train, X_test_scaled, y_test,
-                        classifiers, checkpoint_mgr
+                for seed in seeds:
+                    selector = QUBOFeatureSelector(
+                        solver_name="QUBO-SB",
+                        K=K,
+                        seed=seed,
+                        precomputed_mrmr=precomputed_mrmr,
                     )
-                except Exception as e:
-                    print(f"QUBO-SB failed for K={K}: {e}")
+                    try:
+                        selector.fit(X_train_scaled, y_train)
+                        _evaluate_selector_on_classifiers(
+                            dataset_name, fold_idx, "QUBO-SB", selector, K, seed,
+                            X_train_scaled, y_train, X_test_scaled, y_test,
+                            classifiers, checkpoint_mgr
+                        )
+                    except Exception as e:
+                        print(f"QUBO-SB failed for K={K}, seed={seed}: {e}")
 
 
 def _evaluate_selector_on_classifiers(
