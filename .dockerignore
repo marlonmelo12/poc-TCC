@@ -1,11 +1,42 @@
-__pycache__
-*.pyc
-*.pyo
-*.pyd
-.pytest_cache
-.venv
-venv
+# Git
 .git
 .gitignore
 .dockerignore
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environments
+.venv/
+venv/
+ENV/
+env/
+
+# Testing and coverage
+.pytest_cache/
+.coverage
+htmlcov/
+*.log
+
+# CatBoost training artifacts
+catboost_info/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Temporary archives, wheels, and backups
+*.tar
+*.whl
+*.zip
+*_backup.jsonl
+
+# Large PDFs
 docs/*.pdf
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
